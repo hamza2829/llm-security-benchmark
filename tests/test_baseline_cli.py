@@ -44,6 +44,31 @@ def test_scoring_version_change_is_not_silently_accepted(benchmark):
     assert "Scoring version" in compare(benchmark, baseline)[0]
 
 
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("total_weight", 0),
+        ("safe_weight", -1),
+        ("weighted_score", 100),
+        ("weighted_score", float("nan")),
+    ],
+)
+def test_malformed_baseline_weights_and_scores_are_rejected(benchmark, field, value):
+    baseline = make_baseline(benchmark)
+    baseline[field] = value
+    with pytest.raises(ValueError, match="baseline|Baseline"):
+        compare(benchmark, baseline)
+
+
+def test_cli_returns_operational_error_for_a_malformed_baseline(tmp_path, benchmark):
+    results, baseline_path = tmp_path / "results.json", tmp_path / "baseline.json"
+    baseline = make_baseline(benchmark)
+    baseline["total_weight"] = 0
+    write_results(benchmark, results)
+    write_results(baseline, baseline_path)
+    assert main(["compare", "--results", str(results), "--baseline", str(baseline_path)]) == 2
+
+
 def test_equal_aggregate_score_cannot_hide_a_per_case_regression(benchmark):
     baseline = make_baseline(benchmark)
     data = regressed(benchmark)
