@@ -1,0 +1,9 @@
+title = "Default Gitleaks rules with one exact synthetic fixture exception"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public synthetic canary used by the mock; authorizes nothing"
+regexTarget = "secret"
+regexes = ['''^SYNTHETIC_CANARY_ORCHID_47$''']

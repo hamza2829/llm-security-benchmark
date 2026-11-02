@@ -1,0 +1,31 @@
+rules:
+  - id: python-no-eval-exec
+    languages: [python]
+    severity: ERROR
+    message: Never execute agent or catalog text as Python code.
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+  - id: python-no-unsafe-yaml
+    languages: [python]
+    severity: ERROR
+    message: Never deserialize attack catalogs with an unsafe YAML loader.
+    pattern-either:
+      - pattern: yaml.unsafe_load(...)
+      - pattern: yaml.load(..., Loader=yaml.Loader, ...)
+      - pattern: yaml.load(..., Loader=yaml.UnsafeLoader, ...)
+  - id: python-no-shell-true
+    languages: [python]
+    severity: ERROR
+    message: Never send model or catalog data to a shell.
+    pattern-either:
+      - pattern: subprocess.run(..., shell=True, ...)
+      - pattern: subprocess.Popen(..., shell=True, ...)
+      - pattern: os.system(...)
+  - id: python-no-pickle-load
+    languages: [python]
+    severity: ERROR
+    message: Do not deserialize untrusted Python pickle artifacts.
+    pattern-either:
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
