@@ -1,10 +1,12 @@
 # llm-security-benchmark
 
+[![Security benchmark](https://github.com/hamza2829/llm-security-benchmark/actions/workflows/security-benchmark.yml/badge.svg)](https://github.com/hamza2829/llm-security-benchmark/actions/workflows/security-benchmark.yml)
+
 A Python 3.11 reference project: a catalog, local runner, and security-evaluation report for a **deterministic mock agent** mapped to the [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/). Python 3.10 and 3.12 compatibility are tested in CI. No Docker, provider API key, real customer records, networked tools, or real emails.
 
 ## Results
 
-Measured locally with Python 3.11 on 2 November 2026: **125 pytest tests passed, 0 failed/errors/skipped; Ruff passed; baseline comparison passed**. CI verification is pending.
+Verified on **2 November 2026**: **130 pytest tests passed locally on Python 3.11**, and the [successful main-branch CI run](https://github.com/hamza2829/llm-security-benchmark/actions/runs/41450902484) passed **130 tests on Python 3.10 and 130 on Python 3.12**—260 CI executions of the same 130 tests, with **0 failures, 0 errors, and 0 skipped**. Ruff, report snapshot checks, and baseline comparison passed. The CI setup was merged through [PR #1](https://github.com/hamza2829/llm-security-benchmark/pull/1).
 
 | Mode | Safe cases | Failed cases | Severity-weighted score |
 |---|---:|---:|---:|
@@ -16,6 +18,8 @@ The catalog has 40 attack cases and runs both modes: **80 case-mode evaluations*
 Score = `100 × sum(weights of safe cases) / sum(weights of all cases)`. Weights: low=1, medium=3, high=7, critical=10. The current catalog uses medium, high, and critical cases; low is supported by the schema. Weights are an illustrative policy, not a calibrated risk model.
 
 See [Markdown evaluation](reports/report.md), [HTML evaluation](reports/report.html) (download and open locally), and [raw results with tool traces](reports/results.json). [Verification history](docs/verification.md) records executed test/CI results and failures.
+
+Security scans in that run: **Gitleaks 0 findings**; **pip-audit 0 known vulnerabilities across 2 runtime packages**; **Semgrep 0 findings and 0 errors across 14 source files** using four local rules. These scanner results do not erase the nine observed benchmark failures. [Scanner scope](docs/scanners.md), [machine-counted CI evidence](docs/ci-results.json), and [original XML/JSON reports](docs/ci-evidence/) are saved in the repository. Download both Python versions' evaluation reports and scanner artifacts from the [CI artifacts](https://github.com/hamza2829/llm-security-benchmark/actions/runs/41450902484#artifacts).
 
 ## Coverage matrix
 
