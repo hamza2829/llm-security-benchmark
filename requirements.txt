@@ -1,0 +1,3 @@
+# Runtime dependencies only; the catalog's fake requirements are never installed.
+PyYAML==6.0.3
+packaging==26.3
